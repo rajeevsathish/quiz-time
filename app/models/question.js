@@ -2,12 +2,12 @@
 
 var questionPool = [{
   question: "World Health day is observed on?",
-  multiMedia: {type: 'img', link: 'https://images.pexels.com/photos/1020315/pexels-photo-1020315.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940' },
+  multiMedia: {type: 'youtube', link: 'https://www.youtube.com/watch?v=DL1HHrrhMbs' },
   answer: "A",
   options: { A: "3rd April", B: "3rd June", C: "3rd May", D: "3rd November" }
 }, {
   question: "Which among the following bodies estimates the national income of India?",
-  multiMedia: {type: 'youtube', link: 'https://www.youtube.com/watch?v=DL1HHrrhMbs' },
+  multiMedia: {type: 'img', link: 'https://images.pexels.com/photos/1020315/pexels-photo-1020315.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940' },
   answer: "C",
   options: { A: "Office of the Economic Advisor", B: "Ministry of Statistics", C: "Central Statistical Office", D: "Ministry of Finance" }
 }, {

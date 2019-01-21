@@ -1,12 +1,14 @@
 'use strict';
 var currentQuestion = null;
 var playerScore = 0;
-
+var userDetails;
+var roomDetails;
+var socket;
 var app = {
 
   rooms: function() {
 
-    var socket = io('/rooms', { transports: ['websocket'] });
+    socket = io('/rooms', { transports: ['websocket'] });
 
     // When socket connects, get a list of gamerooms
     socket.on('connect', function() {
@@ -38,7 +40,7 @@ var app = {
 
   game: function(roomId, userName, userId) {
     console.log('inside game room', roomId, userName, userId);
-    var socket = io('/gameroom', { transports: ['websocket'] }); // connect to gameroom socket
+    socket = io('/gameroom', { transports: ['websocket'] }); // connect to gameroom socket
 
     // When socket connects, join the current gameroom
     socket.on('connect', function() {
@@ -101,8 +103,13 @@ var app = {
     });
   },
   admin: function(roomId, username, userId) {
+    userDetails = {
+      roomId,
+      username,
+      userId
+    }
     console.log('inside game room', roomId, username, userId);
-    var socket = io('/gameroom', { transports: ['websocket'] }); // connect to gameroom socket
+    socket = io('/gameroom', { transports: ['websocket'] }); // connect to gameroom socket
 
     // When socket connects, join the current gameroom
     socket.on('connect', function() {
@@ -198,9 +205,14 @@ var app = {
           html = html + imgTag;
         } else if (question.multiMedia.type === 'youtube') {
           const youtube = `<iframe width="400" height="200" src="https://www.youtube.com/embed/DL1HHrrhMbs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-          html = html + youtube;
+          html = html + youtube + `<div class="youtube-played">
+            <button type="submit">Start Timer</button>
+          </div>`;
         }
-
+        $('.chat-history').html(html);
+        $(".youtube-played button").on('click', function(e) {
+          socket.emit('youtube-played', userDetails.roomId);
+        });
       } else {
         var html = `
         <div class="message-data selectable">
@@ -209,10 +221,11 @@ var app = {
           <span class="message-data-name" id="C">  C: ${question.options.C}</span></br>
           <span class="message-data-name" id="D">  D: ${question.options.D}</span></br>
         </div>`;
+        $('.chat-history').html(html);
+        $('.chat-history .selectable').selectable();
+        $(".chat-message button").prop('disabled', false);
       }
-      $('.chat-history').html(html);
-      $('.chat-history .selectable').selectable();
-      $(".chat-message button").prop('disabled', false);
+
     },
 
     // Update number of rooms

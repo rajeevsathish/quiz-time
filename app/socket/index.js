@@ -128,7 +128,10 @@ var ioEvents = function(io) {
         }
       });
     });
-
+    socket.on('youtube-played', function (roomId) {
+      console.log('youtube played');
+      timer(socket, roomId);
+    })
     // When a new answer arrives
     socket.on('playerAnswer', function(roomId, message) {
       console.log(userId);
@@ -198,7 +201,9 @@ var sendQuestion = function(socket, roomId) {
           console.log('questionquestionquestionquestionquestionquestion', question);
           socket.emit('newRoundData', question);
           socket.broadcast.to(roomId).emit('newRoundData', question);
-          timer(socket, roomId);
+          if (question.multiMedia.type !== 'youtube') {
+            timer(socket, roomId);
+          }
         });
         // Room.incCurrentRound(room, function(err, newRoom) {});
       }
