@@ -206,7 +206,7 @@ var app = {
         } else if (question.multiMedia.type === 'youtube') {
           const youtube = `<iframe width="400" height="200" src="https://www.youtube.com/embed/DL1HHrrhMbs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
           html = html + youtube + `<div class="youtube-played">
-            <button type="submit">Start Timer</button>
+            <button type="submit">Resume game</button>
           </div>`;
         }
         $('.chat-history').html(html);
