@@ -36,8 +36,8 @@ var app = {
     });
   },
 
-  game: function(roomId, username, userId) {
-    console.log('inside game room', roomId, username, userId);
+  game: function(roomId, userName, userId) {
+    console.log('inside game room', roomId, userName, userId);
     var socket = io('/gameroom', { transports: ['websocket'] }); // connect to gameroom socket
 
     // When socket connects, join the current gameroom
@@ -72,6 +72,7 @@ var app = {
           var message = {
             content: messageContent,
             userId: userId,
+            userName: userName,
             correct_answer: currentQuestion.answer
           };
 

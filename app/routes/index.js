@@ -84,15 +84,15 @@ router.get('/game/:id', [User.isAuthenticated, function(req, res, next) {
   });
 }]);
 // quiz results
-router.get('/results/:id', [User.isAuthenticated, function(req, res, next) {
+router.get('/result/:id', [User.isAuthenticated, function(req, res, next) {
   var roomId = req.params.id;
   Room.findById(roomId, function(err, room) {
     if (err) throw err;
     if (!room) {
       return next();
     }
-    console.log('redirecting to game room', req.user);
-    res.render('gameroom', { user: req.user, room: room });
+    console.log('admin result redirection', room);
+    res.render('quiz_results', { user: req.user, participant: [] });
   });
 }]);
 // // Admin Game Room 

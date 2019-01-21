@@ -131,7 +131,9 @@ var ioEvents = function(io) {
 
     // When a new answer arrives
     socket.on('playerAnswer', function(roomId, message) {
+      console.log(message);
       var userId = message.userId;
+      var userName = message.userName;
       var user_answer = message.content;
       var correct_answer = message.correct_answer;
 
@@ -147,14 +149,17 @@ var ioEvents = function(io) {
           if (!room.score[room.score.length - 1].answers) {
             room.score[room.score.length - 1].answers = {};
           }
-          if (room.score[room.score.length - 1].answers[userId] == undefined) {
+          console.log('room user update', room.score[room.score.length - 1].answers[userId]);
+          if (!room.score[room.score.length - 1].answers[userId]) {
+            console.log('---------------------------------updating user score');
             if (correct_answer == user_answer) {
-              room.score[room.score.length - 1].answers[userId] = 3;
+              room.score[room.score.length - 1].answers[userId] = { point: 3,  userName: userName};
             } else {
-              room.score[room.score.length - 1].answers[userId] = 0;
+              room.score[room.score.length - 1].answers[userId] = { point: 0,  userName: userName};
             }
-            // console.log("before save : ", JSON.stringify(room), room.score[room.score.length - 1].answers, userId);
             room.save();
+          } else {
+            console.log('dint update score', userId)
           }
         }
       });
