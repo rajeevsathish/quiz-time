@@ -84,15 +84,36 @@ router.get('/game/:id', [User.isAuthenticated, function(req, res, next) {
   });
 }]);
 // quiz results
-router.get('/result/:id', [User.isAuthenticated, function(req, res, next) {
+router.get('/admin/result/:id', [User.isAuthenticated, function(req, res, next) {
   var roomId = req.params.id;
   Room.findById(roomId, function(err, room) {
     if (err) throw err;
     if (!room) {
       return next();
     }
-    console.log('admin result redirection', room);
-    res.render('quiz_results', { user: req.user, participant: [] });
+    var result = {}; 
+    room.score.forEach((round) => {
+      if(!round.answers){
+        return;
+      }
+      Object.keys(round.answers).forEach((userId) => {
+        if(result[userId]){
+          result[userId].finalScore = result[userId].finalScore + round.answers[userId].point;
+        } else {
+          result[userId] = { 
+            finalScore: round.answers[userId].point,
+            userName: round.answers[userId].userName
+          }
+        }
+      })
+    })
+    var participant = [];
+    Object.keys(result).forEach((user) => {
+      participant.push(result[user])
+    })
+    participant.sort((last, cur) => cur.finalScore - last.finalScore)
+    console.log('admin result redirection', room.score, result, participant);
+    res.render('admin_quiz_results', { user: req.user, participant: participant });
   });
 }]);
 // // Admin Game Room 

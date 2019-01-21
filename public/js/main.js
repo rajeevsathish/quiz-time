@@ -142,7 +142,7 @@ var app = {
         // eventually show leaderboard
         // console.log("this is what I found: ", room);
         // take back to rooms list page.
-        window.location = "/result/" + roomId;
+        window.location = "/admin/result/" + roomId;
       });
 
     });
