@@ -104,7 +104,74 @@ var app = {
 
     });
   },
+  admin: function(roomId, username, userId) {
+    console.log('inside game room', roomId, username, userId);
+    var socket = io('/gameroom', { transports: ['websocket'] }); // connect to gameroom socket
 
+    // When socket connects, join the current gameroom
+    socket.on('connect', function() {
+      console.log('connecting to socket');
+      socket.emit('join', roomId, true); // emit join event 
+
+      // Update users list upon emitting updateUsersList event
+      socket.on('updateUsersList', function(users, clear) {
+        console.log('updateUsersList', users)
+        $('.container p.message').remove();
+        if (users.error != null) {
+          $('.container').html(`<p class="message error">${users.error}</p>`);
+        } else {
+          app.helpers.updateUsersList(users, clear);
+        }
+      });
+
+      // Whenever the user hits the save button, emit newMessage event.
+      $(".chat-message button").on('click', function(e) {
+
+        var textareaEle = $("textarea[name='message']");
+        var messageContent = textareaEle.val().trim();
+        if (messageContent !== '') {
+
+          if (currentQuestion.user_answer == null) {
+            currentQuestion.user_answer = messageContent;
+            if (currentQuestion.answer == currentQuestion.user_answer) {
+              playerScore += 3;
+            } else {
+              playerScore -= 1;
+            }
+          }
+          var message = {
+            content: messageContent,
+            userId: userId,
+            correct_answer: currentQuestion.answer
+          };
+
+          socket.emit('playerAnswer', roomId, message);
+          textareaEle.val('');
+          app.helpers.updatePlayerScore();
+          // app.helpers.addMessage(message);
+        }
+      });
+
+      // Whenever a user leaves the current room, remove the user from users list
+      socket.on('removeUser', function(userId) {
+        $('li#user-' + userId).remove();
+        app.helpers.updateNumOfUsers();
+      });
+
+      // show new question
+      socket.on('newRoundData', function(question) {
+        app.helpers.showQuestion(question);
+      });
+
+      socket.on('endQuiz', function(room) {
+        // eventually show leaderboard
+        // console.log("this is what I found: ", room);
+        // take back to rooms list page.
+        window.location = "/rooms";
+      });
+
+    });
+  },
   helpers: {
 
     encodeHTML: function(str) {
@@ -152,9 +219,20 @@ var app = {
       }
       this.updateNumOfUsers();
     },
-    showQuestion: function(question) {
+    showQuestion: function(question, admin) {
       currentQuestion = question;
       currentQuestion.user_answer = null;
+      if (admin) {
+        var html = `<div class="message my-message" dir="auto">${question.question}</div>`;
+      } else {
+        var html = `<div class="message my-message" dir="auto">${question.question}</div>
+        <div class="message-data">
+          <span class="message-data-name">  A: ${question.options.A}</span></br>
+          <span class="message-data-name">  B: ${question.options.B}</span></br>
+          <span class="message-data-name">  C: ${question.options.C}</span></br>
+          <span class="message-data-name">  D: ${question.options.D}</span></br>
+        </div>`;
+      }
       var html = `<div class="message my-message" dir="auto">${question.question}</div>
                     <div class="message-data">
                       <span class="message-data-name">  A: ${question.options.A}</span></br>

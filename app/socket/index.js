@@ -3,6 +3,7 @@
 var config = require('../config');
 // var redis = require('redis').createClient;
 // var adapter = require('socket.io-redis');
+var adminUser = 'admin'
 
 var Room = require('../models/room');
 var Question = require('../models/question');
@@ -43,7 +44,7 @@ var ioEvents = function(io) {
   io.of('/gameroom').on('connection', function(socket) {
     console.log('---------------------------------some one joined game room');
     // Join a gameroom
-    socket.on('join', function(roomId) {
+    socket.on('join', function(roomId, isAdmin) {
       Room.findById(roomId, function(err, room) {
         console.log();
         if (err) throw err;
@@ -60,9 +61,13 @@ var ioEvents = function(io) {
           // check if there is empty seat in the game room
           if (room.currentRound == room.rounds) {
             socket.emit('updateUsersList', { error: 'Game has ended.' });
-          } else if (room.noOfPlayers <= room.connections.length) {
+          } else if (room.noOfPlayers <= room.connections.length && !isAdmin) {
             socket.emit('updateUsersList', { error: 'Room is Full. Try again later' });
           } else {
+            if (isAdmin) {
+              socket.join(room.id);
+              return;
+            }
             Room.addUser(room, socket, function(err, newRoom) {
               console.log('found new room details', newRoom);
               // Join the room channel
@@ -75,13 +80,10 @@ var ioEvents = function(io) {
                 newRoom.save();
                 sendQuestion(socket, newRoom.id);
               }
-
               Room.getUsers(newRoom, socket, function(err, users, cuntUserInRoom) {
                 if (err) throw err;
-
                 // Return list of all user connected to the room to the current user
                 socket.emit('updateUsersList', users, true);
-
                 // Return the current user to other connecting sockets in the room 
                 // ONLY if the user wasn't connected already to the current room
                 if (cuntUserInRoom === 1) {

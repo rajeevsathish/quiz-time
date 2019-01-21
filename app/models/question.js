@@ -1,7 +1,5 @@
 'use strict';
 
-// var questionModel = require('../database').models.question;
-
 var questionPool = [{
   question: "World Health day is observed on?",
   answer: "A",

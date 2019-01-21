@@ -6,7 +6,7 @@ var passport = require('passport');
 
 var User = require('../models/user');
 var Room = require('../models/room');
-
+var adminUser = 'admin'
 // Home page
 router.get('/', function(req, res, next) {
   // If user is already logged in, then redirect to rooms page
@@ -62,7 +62,7 @@ router.get('/rooms', [User.isAuthenticated, function(req, res, next) {
   Room.find({ isOpen: true }, function(err, rooms) {
     // console.log("in get here ... ", err, rooms);
     if (err) throw err;
-    res.render('rooms', { rooms });
+    res.render('rooms', { rooms,  user: req.user});
   });
 }]);
 
@@ -75,10 +75,39 @@ router.get('/game/:id', [User.isAuthenticated, function(req, res, next) {
       return next();
     }
     console.log('redirecting to game room', req.user);
+    if(req.user.username === adminUser){
+      console.log('loading as admin');
+      res.render('admin_game_room', { user: req.user, room: room });
+    } else {
+      res.render('gameroom', { user: req.user, room: room });
+    }
+  });
+}]);
+// quiz results
+router.get('/results/:id', [User.isAuthenticated, function(req, res, next) {
+  var roomId = req.params.id;
+  Room.findById(roomId, function(err, room) {
+    if (err) throw err;
+    if (!room) {
+      return next();
+    }
+    console.log('redirecting to game room', req.user);
     res.render('gameroom', { user: req.user, room: room });
   });
-
 }]);
+// // Admin Game Room 
+// router.get('/admin/game/:id', [User.isAuthenticated, function(req, res, next) {
+//   var roomId = req.params.id;
+//   Room.findById(roomId, function(err, room) {
+//     if (err) throw err;
+//     if (!room) {
+//       return next();
+//     }
+//     console.log('redirecting to game room', req.user);
+//     res.render('admin_game_room', { user: req.user, room: room });
+//   });
+
+// }]);
 
 // Logout
 router.get('/logout', function(req, res, next) {

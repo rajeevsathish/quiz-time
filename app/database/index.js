@@ -30,7 +30,6 @@ module.exports = {
   Mongoose,
   models: {
     user: require('./schemas/user.js'),
-    room: require('./schemas/room.js'),
-    question: require('./schemas/question.js')
+    room: require('./schemas/room.js')
   }
 };

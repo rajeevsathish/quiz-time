@@ -21,19 +21,18 @@
           <i class="fa fa-th-list"></i>
         </div> <!-- end room-header -->
         
-        <div class="room-create clearfix" style="border-bottom: 2px solid white;">
-          <input type="text" name="title" autofocus placeholder ="Type a new room">
-          <button>Create</button>
-        </div> <!-- end room-create -->
-
+        <% if (user.username === 'admin') { %>
+          <div class="room-create clearfix" style="border-bottom: 2px solid white;">
+            <input type="text" name="title" autofocus placeholder ="Type a new room">
+            <button>Create</button>
+          </div> <!-- end room-create -->
+        <% } %>
         <div class="room-list">
           <ul>
             <% if(rooms.length > 0) { %>
               <% rooms.forEach(function(room) { %>
                   <a href="/game/<%= room.id %>"><li class="room-item"><%= room.title %></li></a>
                 <% }); %>
-            <% } else { %>
-              <p class="message" style="text-align: center; padding: 0; margin: 0;">Create your first room!</p>
             <% } %>
           </ul>
         </div> <!-- end room-list -->
