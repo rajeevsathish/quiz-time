@@ -55,12 +55,10 @@ var app = {
           app.helpers.updateUsersList(users, clear);
         }
       });
-
-      // Whenever the user hits the save button, emit newMessage event.
+        // Whenever the user hits the save button, emit newMessage event.
+       
       $(".chat-message button").on('click', function(e) {
-
-        var textareaEle = $("textarea[name='message']");
-        var messageContent = textareaEle.val().trim();
+        var messageContent = $('.selectable').find('.ui-selected').attr('id');
         if (messageContent !== '') {
 
           if (currentQuestion.user_answer == null) {
@@ -78,11 +76,12 @@ var app = {
           };
 
           socket.emit('playerAnswer', roomId, message);
-          textareaEle.val('');
           app.helpers.updatePlayerScore();
+          $(".chat-message button").prop('disabled', true);;
           // app.helpers.addMessage(message);
         }
       });
+     
 
       // Whenever a user leaves the current room, remove the user from users list
       socket.on('removeUser', function(userId) {
@@ -198,14 +197,17 @@ var app = {
         var html = `<div class="message my-message" dir="auto">${question.question}</div>`;
       } else {
         var html = `
-        <div class="message-data">
-          <span class="message-data-name">  A: ${question.options.A}</span></br>
-          <span class="message-data-name">  B: ${question.options.B}</span></br>
-          <span class="message-data-name">  C: ${question.options.C}</span></br>
-          <span class="message-data-name">  D: ${question.options.D}</span></br>
+        <div class="message-data selectable">
+          <span class="message-data-name" id="A">  A: ${question.options.A}</span></br>
+          <span class="message-data-name" id="B">  B: ${question.options.B}</span></br>
+          <span class="message-data-name" id="C">  C: ${question.options.C}</span></br>
+          <span class="message-data-name" id="D">  D: ${question.options.D}</span></br>
         </div>`;
       }
       $('.chat-history').html(html);
+      $('.chat-history .selectable').selectable();
+      $(".chat-message button").prop('disabled', false);
+     
     },
 
     // Update number of rooms
