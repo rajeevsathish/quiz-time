@@ -92,7 +92,7 @@ var app = {
 
       // show new question
       socket.on('newRoundData', function(question) {
-        app.helpers.showQuestion(question);
+        app.helpers.showQuestion(question, false);
       });
 
       socket.on('endQuiz', function(room) {
@@ -160,7 +160,7 @@ var app = {
 
       // show new question
       socket.on('newRoundData', function(question) {
-        app.helpers.showQuestion(question);
+        app.helpers.showQuestion(question, true);
       });
 
       socket.on('endQuiz', function(room) {
@@ -225,7 +225,7 @@ var app = {
       if (admin) {
         var html = `<div class="message my-message" dir="auto">${question.question}</div>`;
       } else {
-        var html = `<div class="message my-message" dir="auto">${question.question}</div>
+        var html = `
         <div class="message-data">
           <span class="message-data-name">  A: ${question.options.A}</span></br>
           <span class="message-data-name">  B: ${question.options.B}</span></br>
@@ -233,13 +233,6 @@ var app = {
           <span class="message-data-name">  D: ${question.options.D}</span></br>
         </div>`;
       }
-      var html = `<div class="message my-message" dir="auto">${question.question}</div>
-                    <div class="message-data">
-                      <span class="message-data-name">  A: ${question.options.A}</span></br>
-                      <span class="message-data-name">  B: ${question.options.B}</span></br>
-                      <span class="message-data-name">  C: ${question.options.C}</span></br>
-                      <span class="message-data-name">  D: ${question.options.D}</span></br>
-                    </div>`;
       $('.chat-history').html(html);
     },
 
