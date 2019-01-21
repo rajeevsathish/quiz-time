@@ -124,34 +124,6 @@ var app = {
         }
       });
 
-      // Whenever the user hits the save button, emit newMessage event.
-      $(".chat-message button").on('click', function(e) {
-
-        var textareaEle = $("textarea[name='message']");
-        var messageContent = textareaEle.val().trim();
-        if (messageContent !== '') {
-
-          if (currentQuestion.user_answer == null) {
-            currentQuestion.user_answer = messageContent;
-            if (currentQuestion.answer == currentQuestion.user_answer) {
-              playerScore += 3;
-            } else {
-              playerScore -= 1;
-            }
-          }
-          var message = {
-            content: messageContent,
-            userId: userId,
-            correct_answer: currentQuestion.answer
-          };
-
-          socket.emit('playerAnswer', roomId, message);
-          textareaEle.val('');
-          app.helpers.updatePlayerScore();
-          // app.helpers.addMessage(message);
-        }
-      });
-
       // Whenever a user leaves the current room, remove the user from users list
       socket.on('removeUser', function(userId) {
         $('li#user-' + userId).remove();
