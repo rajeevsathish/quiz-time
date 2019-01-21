@@ -131,7 +131,7 @@ var ioEvents = function(io) {
 
     // When a new answer arrives
     socket.on('playerAnswer', function(roomId, message) {
-      console.log(message);
+      console.log(userId);
       var userId = message.userId;
       var userName = message.userName;
       var user_answer = message.content;
@@ -149,15 +149,23 @@ var ioEvents = function(io) {
           if (!room.score[room.score.length - 1].answers) {
             room.score[room.score.length - 1].answers = {};
           }
-          console.log('room user update', room.score[room.score.length - 1].answers[userId]);
+          // console.log('room user update', room.score[room.score.length - 1].answers[userId]);
           if (!room.score[room.score.length - 1].answers[userId]) {
-            console.log('---------------------------------updating user score');
+            // console.log('---------------------------------updating user score');
+            const answers = room.score[room.score.length - 1].answers;
             if (correct_answer == user_answer) {
-              room.score[room.score.length - 1].answers[userId] = { point: 3,  userName: userName};
+              answers[userId] = { point: 3,  userName: userName};
             } else {
-              room.score[room.score.length - 1].answers[userId] = { point: 0,  userName: userName};
+              answers[userId] = { point: 0,  userName: userName};
             }
-            room.save();
+            room.score[room.score.length - 1].answers = answers;
+            console.log('---------------------------------updating user score',
+            answers)
+            
+            room.markModified('room.score[0]');
+            room.save(function(err, suc){
+              console.log('error while saving', err)
+            });
           } else {
             console.log('dint update score', userId)
           }

@@ -44,7 +44,6 @@ var app = {
     socket.on('connect', function() {
       console.log('connecting to socket');
       socket.emit('join', roomId); // emit join event 
-
       // Update users list upon emitting updateUsersList event
       socket.on('updateUsersList', function(users, clear) {
         console.log('updateUsersList', users)
@@ -56,7 +55,6 @@ var app = {
         }
       });
         // Whenever the user hits the save button, emit newMessage event.
-       
       $(".chat-message button").on('click', function(e) {
         var messageContent = $('.selectable').find('.ui-selected').attr('id');
         if (messageContent !== '') {
@@ -82,8 +80,6 @@ var app = {
           // app.helpers.addMessage(message);
         }
       });
-     
-
       // Whenever a user leaves the current room, remove the user from users list
       socket.on('removeUser', function(userId) {
         $('li#user-' + userId).remove();
@@ -196,6 +192,15 @@ var app = {
       currentQuestion.user_answer = null;
       if (admin) {
         var html = `<div class="message my-message" dir="auto">${question.question}</div>`;
+        console.log(question);
+        if (question.multiMedia.type === 'img') {
+          var imgTag = `<img width="400" height="200" src=${question.multiMedia.link} alt="Smiley face" height="42" width="42">`
+          html = html + imgTag;
+        } else if (question.multiMedia.type === 'youtube') {
+          const youtube = `<iframe width="400" height="200" src="https://www.youtube.com/embed/DL1HHrrhMbs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+          html = html + youtube;
+        }
+
       } else {
         var html = `
         <div class="message-data selectable">
@@ -208,7 +213,6 @@ var app = {
       $('.chat-history').html(html);
       $('.chat-history .selectable').selectable();
       $(".chat-message button").prop('disabled', false);
-     
     },
 
     // Update number of rooms

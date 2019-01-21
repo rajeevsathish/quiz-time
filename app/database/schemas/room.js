@@ -2,8 +2,8 @@
 
 var Mongoose = require('mongoose');
 
-var DEFAULT_ROUNDS = 5;
-var DEFAULT_PLAYERS = 2;
+var DEFAULT_ROUNDS = 2;
+var DEFAULT_PLAYERS = 1;
 /**
  * Each connection object represents a user connected through a unique socket.
  * Each connection object composed of {userId + socketId}. Both of them together are unique.
