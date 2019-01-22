@@ -777,8 +777,9 @@ var app = {
         initializedPlayer = true;
         const playerWidth = $('#contentPlayer').width();
         if (playerWidth) {
-          const height = playerWidth * (9 / 16);
+          const height = 410;
           $('#contentPlayer').css('height', height + 'px');
+          $('.users-list .list').css('height', height-42 + 'px');
         }
         iframeSrc.contentWindow.initializePreview(playerData);
       };

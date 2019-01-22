@@ -7,7 +7,7 @@ var adminUser = 'admin'
 
 var Room = require('../models/room');
 var Question = require('../models/question');
-var TIME_INTERVAL = 100000000000000; //25 sec
+var TIME_INTERVAL = 1000; //25 sec
 /**
  * Encapsulates all code for emitting and listening to socket events
  *
@@ -164,7 +164,7 @@ var ioEvents = function(io) {
     });
     socket.on('youtube-played', function (roomId) {
       console.log('youtube played');
-      // timer(socket, roomId);
+      timer(socket, roomId);
     })
   });
 }
@@ -193,7 +193,7 @@ var sendQuestion = function(socket, roomId) {
           socket.broadcast.to(roomId).emit('newRoundData', question);
           const mediaType = question.multiMedia ? question.multiMedia.type: undefined;
           if (mediaType !== 'youtube') {
-            // timer(socket, roomId);
+            timer(socket, roomId);
           }
         });
         // Room.incCurrentRound(room, function(err, newRoom) {});
