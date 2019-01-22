@@ -18,7 +18,7 @@
   <body>
     <div class="container clearfix">
       <div class="chat">
-        <div class="chat-header clearfix">
+        <!-- <div class="chat-header clearfix">
           <img src="<%= user.picture %>" alt="avatar">
           <div class="chat-about">
             <div class="chat-room"><%= room.title %></div>
@@ -26,22 +26,15 @@
             <div class="chat-room score-holder"> Score: </div>
           </div>
           <i class="fa fa-users"></i>
-        </div> <!-- end chat-header -->
-        
-        <div class="chat-history">
+        </div> -->
+        <!-- <div class="chat-history">
           <ul>
           </ul>
-        </div> <!-- end chat-history -->
+        </div>
         <div class="chat-message clearfix">
           <button type="submit">SUBMIT</button>
-        </div>
-        
-        <!-- <div class="chat-message clearfix">
-          <textarea name="message" placeholder ="Provide your answer" rows="1"></textarea> 
-          <button type="submit">SUBMIT</button>
-        </div> end chat-message -->
-      </div> <!-- end chat -->
-      
+        </div> -->
+      <iframe id="contentPlayer" class="contentViewerIframeShadow"></iframe>
       <div class="controls">
           <a href="/logout" class="logout-btn">Logout</a>
           <a href="/rooms" class="rooms-btn">Rooms</a>

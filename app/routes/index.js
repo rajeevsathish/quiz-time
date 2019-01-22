@@ -116,19 +116,6 @@ router.get('/admin/result/:id', [User.isAuthenticated, function(req, res, next) 
     res.render('admin_quiz_results', { user: req.user, participant: participant });
   });
 }]);
-// // Admin Game Room 
-// router.get('/admin/game/:id', [User.isAuthenticated, function(req, res, next) {
-//   var roomId = req.params.id;
-//   Room.findById(roomId, function(err, room) {
-//     if (err) throw err;
-//     if (!room) {
-//       return next();
-//     }
-//     console.log('redirecting to game room', req.user);
-//     res.render('admin_game_room', { user: req.user, room: room });
-//   });
-
-// }]);
 
 // Logout
 router.get('/logout', function(req, res, next) {

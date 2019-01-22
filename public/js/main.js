@@ -4,6 +4,8 @@ var playerScore = 0;
 var userDetails;
 var roomDetails;
 var socket;
+const iframeSrc = document.getElementById('contentPlayer');
+
 var app = {
 
   rooms: function() {
@@ -87,10 +89,19 @@ var app = {
         $('li#user-' + userId).remove();
         app.helpers.updateNumOfUsers();
       });
-
+      const iFrameUrl = './../preview/preview.html';
+      iframeSrc.src = iFrameUrl;
+      iframeSrc.onload = () => {
+        const playerWidth = $('#contentPlayer').width();
+        if (playerWidth) {
+          const height = playerWidth * (9 / 16);
+          $('#contentPlayer').css('height', height + 'px');
+        }
+      };
       // show new question
       socket.on('newRoundData', function(question) {
-        app.helpers.showQuestion(question, false);
+        // app.helpers.showQuestion(question, false);
+        iframeSrc.contentWindow.initializePreview({});
       });
 
       socket.on('endQuiz', function(room) {
@@ -178,11 +189,11 @@ var app = {
       for (var user of users) {
         user.username = this.encodeHTML(user.username);
         html += `<li class="clearfix" id="user-${user._id}">
-                     <img src="${user.picture}" alt="${user.username}" />
-                     <div class="about">
+                    <img src="${user.picture}" alt="${user.username}" />
+                    <div class="about">
                         <div class="name">${user.username}</div>
                         <div class="status"><i class="fa fa-circle online"></i> online</div>
-                     </div></li>`;
+                    </div></li>`;
       }
 
       if (html === '') { return; }
@@ -225,7 +236,6 @@ var app = {
         $('.chat-history .selectable').selectable();
         $(".chat-message button").prop('disabled', false);
       }
-
     },
 
     // Update number of rooms
