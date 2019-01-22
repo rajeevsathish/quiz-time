@@ -20,7 +20,7 @@ body {
 .container {
   margin: 0 auto;
   width: 900px;
-  background: #444753;
+  background: #e6ecff;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -83,7 +83,7 @@ body {
 .chat {
   display: flex;
   justify-content: space-between;
-  background: #464646;
+  background: #e6ecff;
 }
 
 .chat iframe {
