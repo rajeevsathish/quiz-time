@@ -1,24 +1,92 @@
 <!DOCTYPE html>
-<html >
-  <head>
-    <meta charset="UTF-8">
-    <title>Quiz Time</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Time</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
- 
+
   <style>
-  .selectable .ui-selecting { background: #FECA40; }
-  .selectable .ui-selected { background: #F39814; color: white; }
-  .selectable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
-  .selectable span { margin: 3px; padding: 3px; font-size: 20px; height: 18px; }
+    .selectable .ui-selecting {
+      background: #FECA40;
+    }
+
+    .selectable .ui-selected {
+      background: #F39814;
+      color: white;
+    }
+
+    .selectable {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    .selectable span {
+      margin: 3px;
+      padding: 3px;
+      font-size: 20px;
+      height: 18px;
+    }
+
+    .chat {
+      display: flex;
+      justify-content: space-between;
+      width: inherit;
+      float: inherit;
+    }
+    
+    .chat iframe {
+      border: 0;
+    }
+
+    .users-list ul {
+      padding: 0px;
+      margin: 0px;
+      margin-bottom: 0px;
+      overflow-y: auto; 
+    }
+
+    .users-list ul li {
+      padding: 10px;
+      border-bottom: 1px solid #e0e2e4;
+    }
+
+    .users-list .name {
+      color: black;
+    }
+
+    a.logout-btn,
+    a.logout-btn:hover,
+    a.logout-btn:focus {
+      background: white;
+      color: black;
+    }
+
+    a.rooms-btn,
+    a.rooms-btn:hover,
+    a.rooms-btn:focus {
+      background: #024f9d;
+    }
+
+    .controls {
+      border: 0px;
+    }
+
+    .users-list li img {
+      border: 1px solid rgba(0, 0, 0, 0.28);
+    }
   </style>
-  </head>
-  <body>
-    <div class="container clearfix">
-      <div class="chat">
-        <!-- <div class="chat-header clearfix">
+</head>
+
+<body>
+  <div class="container clearfix">
+    <div class="chat">
+      <!-- <div class="chat-header clearfix">
           <img src="<%= user.picture %>" alt="avatar">
           <div class="chat-about">
             <div class="chat-room"><%= room.title %></div>
@@ -27,22 +95,23 @@
           </div>
           <i class="fa fa-users"></i>
         </div> -->
-        <!-- <div class="chat-history">
+      <!-- <div class="chat-history">
           <ul>
           </ul>
         </div>
         <div class="chat-message clearfix">
           <button type="submit">SUBMIT</button>
         </div> -->
-      <iframe id="contentPlayer" class="contentViewerIframeShadow"></iframe>
-      <div class="controls">
-          <a href="/logout" class="logout-btn">Logout</a>
-          <a href="/rooms" class="rooms-btn">Rooms</a>
-      </div>
+      <iframe id="contentPlayer" class="contentViewerIframeShadow" width="100%"></iframe>
+
 
       <div class="users-list">
         <ul class="list">
         </ul>
+        <div class="controls">
+          <a href="/logout" class="logout-btn">Logout</a>
+          <a href="/rooms" class="rooms-btn">Rooms</a>
+        </div>
       </div>
     </div> <!-- end container -->
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
@@ -50,6 +119,11 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/main.js"></script>
-    <script>$(function(){app.game('<%= room.id %>', '<%= user.username %>','<%= user.id %>')});</script>
-  </body>
+    <script>
+      $(function () {
+        app.game('<%= room.id %>', '<%= user.username %>', '<%= user.id %>')
+      });
+    </script>
+</body>
+
 </html>

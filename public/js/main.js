@@ -96,6 +96,7 @@ var app = {
         if (playerWidth) {
           const height = playerWidth * (9 / 16);
           $('#contentPlayer').css('height', height + 'px');
+          $('.users-list .list').css('height', height - 46 + 'px');
         }
       };
       // show new question

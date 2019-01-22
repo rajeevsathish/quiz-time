@@ -164,7 +164,7 @@ var ioEvents = function(io) {
     });
     socket.on('youtube-played', function (roomId) {
       console.log('youtube played');
-      timer(socket, roomId);
+      // timer(socket, roomId);
     })
   });
 }
@@ -193,7 +193,7 @@ var sendQuestion = function(socket, roomId) {
           socket.broadcast.to(roomId).emit('newRoundData', question);
           const mediaType = question.multiMedia ? question.multiMedia.type: undefined;
           if (mediaType !== 'youtube') {
-            timer(socket, roomId);
+            // timer(socket, roomId);
           }
         });
         // Room.incCurrentRound(room, function(err, newRoom) {});
