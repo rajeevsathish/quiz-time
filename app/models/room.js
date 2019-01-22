@@ -24,8 +24,8 @@ var findById = function(id, callback) {
 var findByIdAndUpdate = function(id, data, callback) {
   roomModel.findByIdAndUpdate(id, data, { new: true }, callback);
 }
-var updateOne = (query, data) => {
-  // roomModel.
+var update = (query, data, callback) => {
+  roomModel.update(query,data,  callback)
 }
 /**
  * Add a user along with the corresponding socket to the passed room
@@ -140,6 +140,7 @@ var removeUser = function(socket, callback) {
 
 module.exports = {
   create,
+  update,
   find,
   findOne,
   findById,

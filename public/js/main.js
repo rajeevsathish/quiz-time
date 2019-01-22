@@ -200,10 +200,10 @@ var app = {
       if (admin) {
         var html = `<div class="message my-message" dir="auto">${question.question}</div>`;
         console.log(question);
-        if (question.multiMedia.type === 'img') {
+        if (question.multiMedia && question.multiMedia.type === 'img') {
           var imgTag = `<img width="400" height="200" src=${question.multiMedia.link} alt="Smiley face" height="42" width="42">`
           html = html + imgTag;
-        } else if (question.multiMedia.type === 'youtube') {
+        } else if (question.multiMedia && question.multiMedia.type === 'youtube') {
           const youtube = `<iframe width="400" height="200" src="https://www.youtube.com/embed/DL1HHrrhMbs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
           html = html + youtube + `<div class="youtube-played">
             <button type="submit">Resume game</button>

@@ -130,7 +130,6 @@ var ioEvents = function(io) {
     });
     // When a new answer arrives
     socket.on('playerAnswer', function(roomId, message) {
-      console.log(userId);
       var userId = message.userId;
       var userName = message.userName;
       var user_answer = message.content;
@@ -148,9 +147,7 @@ var ioEvents = function(io) {
           if (!room.score[room.score.length - 1].answers) {
             room.score[room.score.length - 1].answers = {};
           }
-          // console.log('room user update', room.score[room.score.length - 1].answers[userId]);
           if (!room.score[room.score.length - 1].answers[userId]) {
-            // console.log('---------------------------------updating user score');
             const answers = room.score[room.score.length - 1].answers;
             if (correct_answer == user_answer) {
               answers[userId] = { point: 3,  userName: userName};
@@ -158,15 +155,9 @@ var ioEvents = function(io) {
               answers[userId] = { point: 0,  userName: userName};
             }
             room.score[room.score.length - 1].answers = answers;
-            console.log('---------------------------------updating user score',
-            answers)
-            
-            room.markModified('room.score[0]');
-            room.save(function(err, suc){
-              console.log('error while saving', err)
+            Room.update({_id: roomId}, {score: room.score}, (err, suc) => {
+              console.log('error while updating answer', err);
             });
-          } else {
-            console.log('dint update score', userId)
           }
         }
       });
@@ -200,7 +191,8 @@ var sendQuestion = function(socket, roomId) {
           if (err) throw err;
           socket.emit('newRoundData', question);
           socket.broadcast.to(roomId).emit('newRoundData', question);
-          if (question.multiMedia.type !== 'youtube') {
+          const mediaType = question.multiMedia ? question.multiMedia.type: undefined;
+          if (mediaType !== 'youtube') {
             timer(socket, roomId);
           }
         });
