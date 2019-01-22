@@ -7,7 +7,7 @@ var adminUser = 'admin'
 
 var Room = require('../models/room');
 var Question = require('../models/question');
-var TIME_INTERVAL = 10000; //25 sec
+var TIME_INTERVAL = 100000000000000; //25 sec
 /**
  * Encapsulates all code for emitting and listening to socket events
  *
